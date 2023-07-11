@@ -2,6 +2,10 @@ import json
 
 class ContractABI:
     def __init__(self, file_path):
+        '''
+        file_path: path to the json file containing the abi
+        @NOTE doing this in a more effective way breaks the class creation for now, @TODO refactor ABI_class.py for better class creation
+        '''
         self.file_path = file_path
         self.abi = self.read_abi_from_file(file_path)
         self.name = self.abi['contractName']
