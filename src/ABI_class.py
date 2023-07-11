@@ -83,8 +83,3 @@ class ContractABI:
         repr_str += f"├── fallback: {repr(self.fallback)}\n"
         repr_str += f"└── receive: {repr(self.receive)}\n"
         return repr_str
-
-
-        
-# abi_read = ContractABI("/Users/abhinavmir/Desktop/Code/eclair/artifacts/contracts/payer.sol/PayeeContract.json") 
-# print(abi_read)
