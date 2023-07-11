@@ -71,7 +71,7 @@ class ContractABI:
         return abi_data
 
     def __repr__(self):
-        repr_str = f"ContractABI(file_path={self.file_path}, name={self.name})\n"
+        repr_str = f"{self.name} @ {self.file_path})\n"
         repr_str += "├── functions:\n"
         for func in self.functions:
             repr_str += f"│   {repr(func)}\n"
@@ -82,5 +82,5 @@ class ContractABI:
 
 
         
-abi_read = ContractABI("/Users/abhinavmir/Desktop/Code/eclair/artifacts/contracts/payer.sol/PayeeContract.json") 
-print(abi_read)
+# abi_read = ContractABI("/Users/abhinavmir/Desktop/Code/eclair/artifacts/contracts/payer.sol/PayeeContract.json") 
+# print(abi_read)
