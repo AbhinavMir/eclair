@@ -84,7 +84,7 @@ def execute_transaction_{name}(self, {input_type}) -> ({return_type}):
     return template
 
 def create_function(abi_function: ABI_class.ContractABI.FunctionABI):
-    logging.info(f"Creating function {abi_function.name}")
+    logging.info("Creating function %s", abi_function.name)
     name = abi_function.name
     inputs = abi_function.inputs
     outputs = abi_function.outputs
@@ -116,7 +116,7 @@ def create_function(abi_function: ABI_class.ContractABI.FunctionABI):
             template = "exec function ({{inputs}}) -> ({{outputs}})"
             t = exec_input_output(abi_function)
 
-    logging.info("%s: %s", abi_function.name, template)
+    logging.info("%s: %s", name, template)
     return t
 
 abi = ABI_class.ContractABI(
