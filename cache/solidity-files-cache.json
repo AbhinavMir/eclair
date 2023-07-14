@@ -70,6 +70,41 @@
       "artifacts": [
         "HelloWorld"
       ]
+    },
+    "/Users/abhinavmir/Desktop/Code/eclair/contracts/test/a.sol": {
+      "lastModificationDate": 1689098407362,
+      "contentHash": "2153cd2e395247b7945b4c26a6146f5a",
+      "sourceName": "contracts/test/a.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "PayeeContract"
+      ]
     }
   }
 }

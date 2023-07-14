@@ -1,3 +1,9 @@
+
+from typing import Dict
+from web3 import Web3
+
+def deployer(lz_address: str, lzc_value: int, compile: bool) -> Dict:
+    pass
 class Spoke:
     def __init__(self, private_key, deploy_args):
         # Update with your Ethereum node URL

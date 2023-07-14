@@ -2,10 +2,6 @@ import json
 
 class ContractABI:
     def __init__(self, file_path):
-        '''
-        file_path: path to the json file containing the abi
-        @NOTE doing this in a more effective way breaks the class creation for now, @TODO refactor ABI_class.py for better class creation
-        '''
         self.file_path = file_path
         self.abi = self.read_abi_from_file(file_path)
         self.name = self.abi['contractName']
@@ -50,18 +46,38 @@ class ContractABI:
     class FunctionABI:
         def __init__(self, name, inputs, outputs, state_mutability):
             self.name = name
-            self.inputs = inputs
-            self.outputs = outputs
+            self.inputs = [ContractABI.Input(i['name'], i['type'], i['internalType']) for i in inputs]
+            self.outputs = [ContractABI.Output(o['name'], o['type'], o['internalType']) for o in outputs]
             self.state_mutability = state_mutability
 
         def __repr__(self):
             return f"└── FunctionABI(name={self.name}, inputs={self.inputs}, outputs={self.outputs}, state_mutability={self.state_mutability})"
+        
+    class Input:
+        def __init__(self, name, type, internal_type):
+            self.name = name
+            self.internal_type = internal_type
+            self.type = type
+            self.pythonic_type = get_pythonic_type(type)
+
+        def __repr__(self):
+            return f"Input(name={self.name}, type={self.type}, pythonic_type={self.pythonic_type})"
+    
+    class Output:
+        def __init__(self, name, type, internal_type):
+            self.name = name
+            self.internal_type = internal_type
+            self.type = type
+            self.pythonic_type = get_pythonic_type(type)
+
+        def __repr__(self):
+            return f"Output(name={self.name}, type={self.type}, pythonic_type={self.pythonic_type})"
 
     class NonFunctionABI:
         def __init__(self, inputs, name, outputs, state_mutability, type):
-            self.inputs = inputs
             self.name = name
-            self.outputs = outputs
+            self.inputs = [ContractABI.Input(i['name'], i['type'], i['internalType']) for i in inputs]
+            self.outputs = [ContractABI.Output(o['name'], o['type'], o['internalType']) for o in outputs]
             self.state_mutability = state_mutability
             self.type = type
 
@@ -83,3 +99,21 @@ class ContractABI:
         repr_str += f"├── fallback: {repr(self.fallback)}\n"
         repr_str += f"└── receive: {repr(self.receive)}\n"
         return repr_str
+    
+def get_pythonic_type(type):
+    if type == 'bool':
+        return 'bool'
+    elif type.startswith('uint') or type.startswith('int'):
+        return 'int'
+    elif type == 'address':
+        return 'str'
+    elif type.startswith('bytes'):
+        return 'bytes'
+    elif type == 'string':
+        return 'str'
+    elif type.startswith('mapping'):
+        return 'dict'
+    elif type.endswith('[]'):
+        return 'list'
+    else:
+        return None  # if type not recognized
