@@ -28,7 +28,7 @@ def create_dependency_graph(root_dir):
             if file_regex.search(filename):
                 file_path = os.path.join(dirpath, filename)
                 process_file(file_path, graph)
-
+                
     return graph
 
 def process_file(file_path, graph):
