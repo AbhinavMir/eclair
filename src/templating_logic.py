@@ -6,7 +6,7 @@ import logging
 def initialise_class(rpc, private_key):
     template = f"""
     def __init__(self, rpc='{rpc}', private_key='{private_key}'):
-        self.w3 = Web3(Web3.HTTPProvider({rpc}))
+        self.w3 = Web3(Web3.HTTPProvider('{rpc}'))
         self.deployed = Deployer(self.w3)
         self.contract_address = self.deployed['contract_address']
         self.abi = self.deployed['abi']
