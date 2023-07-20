@@ -1,5 +1,5 @@
 import os
-import yaml
+import json
 
 class ProjectInitializer:
     def __init__(self):
@@ -32,16 +32,23 @@ class ProjectInitializer:
     
     def write_to_eclair_conf(self):
         conf_data = {
-            'rpc_endpoint': self.rpc_endpoint,
-            'deployer_address': self.deployer_address
+            'run_compile': True,
+            'constructor_args': [],
+            'network_name': 'http://example.com',
+            'private_key': 'your_private_key',
+            'abi_path': 'path_to_abi_file',
+            'from_address': 'your_address',
+            'gas': 200000,
+            'gas_price': 1000000000,
+            'nonce': 0
         }
 
-        conf_file_path = os.path.join(self.directory, 'eclair.conf.yaml')
+        conf_file_path = os.path.join(self.directory, 'eclair.conf.json')
 
         with open(conf_file_path, 'w') as conf_file:
-            yaml.dump(conf_data, conf_file)
+            json.dump(conf_data, conf_file, indent=4)
 
-        print(f"eclair.conf.yaml created with the following data:")
+        print(f"eclair.conf.json created with the following data:")
         print(conf_data)
     
     def initialize_project(self):
