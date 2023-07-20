@@ -3,6 +3,7 @@ import ABI_class as ABI_class
 import sol_to_json as sol_to_json
 import templating_logic as templating_logic
 import os
+import json
 import sys
 
 sample_args = {
@@ -16,6 +17,14 @@ sample_args = {
     'gas_price': 1000000000,
     'nonce': 0
 }
+
+def read_config(config_file_path):
+    with open(config_file_path) as config_file:
+        config = json.load(config_file)
+    return config
+
+file_path = sys.argv[1:]
+config = read_config(file_path[0])
 
 def file_exists(filepath):
     return os.path.isfile(filepath)
@@ -45,4 +54,4 @@ for abi in abis:
     # Write the code in the specified output directory
     code_filepath = os.path.join(output_directory, f"{abi.name}.py")
     with open(code_filepath, "w") as code_file:
-        code_file.write(templating_logic.create_class(abi, sample_args))
+        code_file.write(templating_logic.create_class(abi, config))
