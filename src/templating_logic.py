@@ -3,18 +3,17 @@ import ABI_class
 from typing import Dict
 import logging
 
-def initialise_class(rpc):
+def initialise_class(rpc, private_key):
     template = f"""
-    def __init__(self, deploy_args):
-        rpc = deploy_args['network_name']
-        self.w3 = Web3(Web3.HTTPProvider('{rpc}'))
-        self.deployed = deployer(self.w3)
-        self.contract_address = self.deployed['contract_address]
+    def __init__(self, rpc='{rpc}', private_key='{private_key}'):
+        self.w3 = Web3(Web3.HTTPProvider({rpc}))
+        self.deployed = Deployer(self.w3)
+        self.contract_address = self.deployed['contract_address']
         self.abi = self.deployed['abi']
-        self.w3
         self.contract = self.w3.eth.contract(address=self.contract_address, abi=self.abi)
+        self.private_key = private_key
         """
-        
+
     return template
 
 
@@ -281,6 +280,7 @@ from web3 import Web3
     template += f"""
 class contract_{name}_class:
 """
+    template += initialise_class(network_name, private_key)
     template += create_call_function()
     template += create_exec_function()
     if constructor:
