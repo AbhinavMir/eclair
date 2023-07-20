@@ -3,19 +3,20 @@ import ABI_class
 from typing import Dict
 import logging
 
-
-def create_w3_object(rpc):
+def initialise_class(rpc):
     template = f"""
-    self.w3 = Web3(Web3.HTTPProvider("{rpc}"))
-    """
+    def __init__(self, deploy_args):
+        rpc = deploy_args['network_name']
+        self.w3 = Web3(Web3.HTTPProvider('{rpc}'))
+        self.deployed = deployer(self.w3)
+        self.contract_address = self.deployed['contract_address]
+        self.abi = self.deployed['abi']
+        self.w3
+        self.contract = self.w3.eth.contract(address=self.contract_address, abi=self.abi)
+        """
+        
     return template
 
-def imports():
-    template = f"""
-from typing import Dict
-from web3 import Web3
-    """
-    return template
 
 def create_call_function():
     template = """
@@ -85,9 +86,10 @@ def pure_view_input_no_output(abi_function: ABI_class.ContractABI.FunctionABI):
     name = abi_function.name
     inputs = abi_function.inputs
     input_params = ", ".join(f"{input.name}: {input.pythonic_type}" for input in inputs)
+    input_param_without_type = ", ".join(input.name for input in inputs)
     template = f"""
     def call_function_{name}(self, {input_params}) -> None:
-        return self.call_function('{name}', {input_params})
+        return self.call_function('{name}', {input_param_without_type})
     """
     return template
 
@@ -95,11 +97,12 @@ def pure_view_input_output(abi_function: ABI_class.ContractABI.FunctionABI):
     name = abi_function.name
     inputs = abi_function.inputs
     input_params = ", ".join(f"{input.name}: {input.pythonic_type}" for input in inputs)
+    input_param_without_type = ", ".join(input.name for input in inputs)
     outputs = abi_function.outputs
     return_type = ", ".join(output.pythonic_type for output in outputs)
     template = f"""
     def call_function_{name}(self, {input_params}) -> ({return_type}):
-        return self.call_function('{name}', {input_params})
+        return self.call_function('{name}', {input_param_without_type})
     """
     return template
 
@@ -125,9 +128,10 @@ def exec_input_no_output(abi_function: ABI_class.ContractABI.FunctionABI):
     name = abi_function.name
     inputs = abi_function.inputs
     input_params = ", ".join(f"{input.name}: {input.pythonic_type}" for input in inputs)
+    input_param_without_type = ", ".join(input.name for input in inputs)
     template = f"""
     def execute_transaction_{name}(self, {input_params}) -> None:
-        return self.execute_transaction('{name}', {input_params})
+        return self.execute_transaction('{name}', {input_param_without_type})
     """
     return template
 
@@ -135,11 +139,12 @@ def exec_input_output(abi_function: ABI_class.ContractABI.FunctionABI):
     name = abi_function.name
     inputs = abi_function.inputs
     input_params = ", ".join(f"{input.name}: {input.pythonic_type}" for input in inputs)
+    input_param_without_type = ", ".join(input.name for input in inputs)
     outputs = abi_function.outputs
     return_type = ", ".join(output.pythonic_type for output in outputs)
     template = f"""
     def execute_transaction_{name}(self, {input_params}) -> ({return_type}):
-        return self.execute_transaction('{name}', {input_params})
+        return self.execute_transaction('{name}', {input_param_without_type})
     """
     return template
 
@@ -180,19 +185,102 @@ def create_function(abi_function: ABI_class.ContractABI.FunctionABI):
     logging.info("%s: %s", name, template)
     return t
 
-def create_class(abi: ABI_class.ContractABI):
+def deployer_writer(
+    run_compile: bool,
+    constructor_args: list,
+    network_name: str,
+    private_key: str,
+    abi_path: str,
+    from_address: str,
+    gas: int,
+    gas_price: int,
+    nonce: int
+):
+    template_code = """
+def Deployer(w3):
+    {% if run_compile %}
+    os.system("npx hardhat compile")
+    {% endif %}
+    private_key = '{{ private_key }}'
+    account = w3.eth.account.from_key(private_key)
+
+    with open('{{ abi_path }}', 'r') as file:
+        contract_dump = json.load(file)
+
+    abi = contract_dump['abi']
+    bytecode = contract_dump['bytecode']
+    contract = w3.eth.contract(abi=abi, bytecode=bytecode)
+
+    deploy_txn = contract.constructor({{ constructor_args }}).buildTransaction({
+        'from': '{{ from_address }}',
+        'gas': {{ gas }},
+        'gasPrice': {{ gas_price }},
+        'nonce': {{ nonce }}
+    })
+
+    signed_txn = account.sign_transaction(deploy_txn)
+    deployment_receipt = w3.eth.send_raw_transaction(signed_txn.rawTransaction)
+    deployment_receipt = w3.eth.wait_for_transaction_receipt(deployment_receipt)
+    contract_address = deployment_receipt['contractAddress']
+    return {
+        'contract_address': contract_address,
+        'abi' : abi
+    }
+"""
+
+    # Create a Jinja2 template object
+    template = Template(template_code)
+
+    # Render the template
+    rendered_code = template.render(
+        run_compile=run_compile,
+        constructor_args=constructor_args,
+        network_name=network_name,
+        private_key=private_key,
+        abi_path=abi_path,
+        from_address=from_address,
+        gas=gas,
+        gas_price=gas_price,
+        nonce=nonce
+    )
+
+    return rendered_code
+
+def create_class(abi: ABI_class.ContractABI, args_from_config: dict):
+    run_compile = args_from_config['run_compile']
+    constructor_args = args_from_config['constructor_args']
+    network_name = args_from_config['network_name']
+    private_key = args_from_config['private_key']
+    abi_path = args_from_config['abi_path']
+    from_address = args_from_config['from_address']
+    gas = args_from_config['gas']
+    gas_price = args_from_config['gas_price']
+    nonce = args_from_config['nonce']
+    
     name = abi.name
     functions = abi.functions
     constructor = abi.constructor
     fallback = abi.fallback
     receive = abi.receive
     template = f"""
+import os
+import json
 from typing import Dict
 from web3 import Web3
-
-class contract_{name}_class:
 """ 
-    template += create_w3_object("http://localhost:7545")
+    template += deployer_writer(run_compile=run_compile,
+        constructor_args=constructor_args,
+        network_name=network_name,
+        private_key=private_key,
+        abi_path=abi_path,
+        from_address=from_address,
+        gas=gas,
+        gas_price=gas_price,
+        nonce=nonce
+    )
+    template += f"""
+class contract_{name}_class:
+"""
     template += create_call_function()
     template += create_exec_function()
     if constructor:
@@ -205,9 +293,3 @@ class contract_{name}_class:
     for function in functions:
         template += create_function(function)
     return template
-
-# path = "/Users/abhinavmir/Desktop/Code/eclair/artifacts/contracts/test_output.sol/test_this.json"
-# abi = ABI_class.ContractABI(path)
-
-# print(abi)
-# print(create_class(abi))

@@ -5,6 +5,17 @@ import templating_logic as templating_logic
 import os
 import sys
 
+sample_args = {
+    'run_compile': True,
+    'constructor_args': [],
+    'network_name': 'http://example.com',
+    'private_key': 'your_private_key',
+    'abi_path': 'path_to_abi_file',
+    'from_address': 'your_address',
+    'gas': 200000,
+    'gas_price': 1000000000,
+    'nonce': 0
+}
 
 def file_exists(filepath):
     return os.path.isfile(filepath)
@@ -34,4 +45,4 @@ for abi in abis:
     # Write the code in the specified output directory
     code_filepath = os.path.join(output_directory, f"{abi.name}.py")
     with open(code_filepath, "w") as code_file:
-        code_file.write(templating_logic.create_class(abi))
+        code_file.write(templating_logic.create_class(abi, sample_args))
