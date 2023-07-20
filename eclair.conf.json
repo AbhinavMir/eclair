@@ -7,5 +7,6 @@
     "from_address": "your_address",
     "gas": 200000,
     "gas_price": 1000000000,
-    "nonce": 0
+    "nonce": 0,
+    "output_directory": "wrappers"
 }

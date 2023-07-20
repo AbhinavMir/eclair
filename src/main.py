@@ -1,5 +1,8 @@
+import sys
 import argparse
 import subprocess
+from entry import ProjectInitializer
+from agg import FunctionAggregator
 
 def process_arguments():
     parser = argparse.ArgumentParser(prog='eclair', description='A tool to create library wrappers for Blockchain Business Logic code.')
@@ -11,9 +14,11 @@ def process_arguments():
     args = parser.parse_args()
 
     if args.command == 'init':
-        subprocess.call(["python", "src/entry.py"])
+        project = ProjectInitializer()
+        project.initialize_project()
     else:
-        subprocess.call(["python", "src/agg.py"])
+        function_aggregator = FunctionAggregator()
+        function_aggregator.process_files()
 
 if __name__ == '__main__':
-    process_arguments()
+    sys.exit(process_arguments())

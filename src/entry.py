@@ -40,7 +40,8 @@ class ProjectInitializer:
             'from_address': 'your_address',
             'gas': 200000,
             'gas_price': 1000000000,
-            'nonce': 0
+            'nonce': 0,
+            'output_directory': 'wrappers',
         }
 
         conf_file_path = os.path.join(self.directory, 'eclair.conf.json')
@@ -56,10 +57,7 @@ class ProjectInitializer:
         self.check_and_create_directories()
         self.write_to_eclair_conf()
 
-def main():
+def flow():
     # Instantiate ProjectInitializer and initialize the project
     project = ProjectInitializer()
     project.initialize_project()
-
-if __name__ == '__main__':
-    main()
