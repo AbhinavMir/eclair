@@ -1,6 +1,5 @@
 from jinja2 import Template
 import ABI_class
-from typing import Dict
 import logging
 
 def initialise_class(rpc, private_key):
@@ -75,6 +74,10 @@ def pure_view_no_input_output(abi_function: ABI_class.ContractABI.FunctionABI):
     name = abi_function.name
     outputs = abi_function.outputs  
     return_type = ", ".join(output.pythonic_type for output in outputs)
+
+    if(len(outputs) > 1):
+        return_type = f"Tuple({return_type})"
+
     template = f"""
     def call_function_{name}(self) -> ({return_type}):
         return self.call_function('{name}')
@@ -99,6 +102,10 @@ def pure_view_input_output(abi_function: ABI_class.ContractABI.FunctionABI):
     input_param_without_type = ", ".join(input.name for input in inputs)
     outputs = abi_function.outputs
     return_type = ", ".join(output.pythonic_type for output in outputs)
+
+    if(len(outputs) > 1):
+        return_type = f"Tuple({return_type})"
+
     template = f"""
     def call_function_{name}(self, {input_params}) -> ({return_type}):
         return self.call_function('{name}', {input_param_without_type})
@@ -117,6 +124,10 @@ def exec_no_input_output(abi_function: ABI_class.ContractABI.FunctionABI):
     name = abi_function.name
     outputs = abi_function.outputs
     return_type = ", ".join(output.pythonic_type for output in outputs)
+
+    if(len(outputs) > 1):
+        return_type = f"Tuple({return_type})"
+
     template = f"""
     def execute_transaction_{name}(self) -> ({return_type}):
         return self.execute_transaction('{name}')
@@ -141,12 +152,15 @@ def exec_input_output(abi_function: ABI_class.ContractABI.FunctionABI):
     input_param_without_type = ", ".join(input.name for input in inputs)
     outputs = abi_function.outputs
     return_type = ", ".join(output.pythonic_type for output in outputs)
+
+    if(len(outputs) > 1):
+        return_type = f"Tuple({return_type})"
+        
     template = f"""
     def execute_transaction_{name}(self, {input_params}) -> ({return_type}):
         return self.execute_transaction('{name}', {input_param_without_type})
     """
     return template
-
 
 def create_function(abi_function: ABI_class.ContractABI.FunctionABI):
     logging.info("Creating function %s", abi_function.name)
@@ -154,6 +168,14 @@ def create_function(abi_function: ABI_class.ContractABI.FunctionABI):
     inputs = abi_function.inputs
     outputs = abi_function.outputs
     state_mutability = abi_function.state_mutability
+
+    # Check if the number of outputs is greater than 2
+    if len(outputs) > 1:
+        output_types = ", ".join(output.pythonic_type for output in outputs)
+        return_type = f"Tuple({output_types})"
+    else:
+        return_type = ", ".join(output.pythonic_type for output in outputs)
+
     if state_mutability != 'view' and state_mutability != 'pure':
         if not outputs and not inputs:
             template = "call function () -> ()"
@@ -162,10 +184,10 @@ def create_function(abi_function: ABI_class.ContractABI.FunctionABI):
             template = "call function ({{inputs}}) -> ()"
             t = pure_view_input_no_output(abi_function)
         elif not inputs and outputs:
-            template = "call function () -> ({{outputs}})"
+            template = f"call function () -> ({return_type})"
             t = pure_view_no_input_output(abi_function)
         else:
-            template = "call function ({{inputs}}) -> ({{outputs}})"
+            template = f"call function ({{inputs}}) -> ({return_type})"
             t = pure_view_input_output(abi_function)
     else:
         if not outputs and not inputs:
@@ -175,10 +197,10 @@ def create_function(abi_function: ABI_class.ContractABI.FunctionABI):
             template = "exec function ({{inputs}}) -> ()"
             t = exec_input_no_output(abi_function)
         elif not inputs and outputs:
-            template = "exec function () -> ({{outputs}})"
+            template = f"exec function () -> ({return_type})"
             t = exec_no_input_output(abi_function)
         else:
-            template = "exec function ({{inputs}}) -> ({{outputs}})"
+            template = f"exec function ({{inputs}}) -> ({return_type})"
             t = exec_input_output(abi_function)
 
     logging.info("%s: %s", name, template)
@@ -264,7 +286,7 @@ def create_class(abi: ABI_class.ContractABI, args_from_config: dict):
     template = f"""
 import os
 import json
-from typing import Dict
+from typing import Dict, Tuple
 from web3 import Web3
 """ 
     template += deployer_writer(run_compile=run_compile,
