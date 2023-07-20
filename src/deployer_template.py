@@ -1,5 +1,7 @@
 from jinja2 import Template
-
+import os
+import json
+from web3 import Web3
 
 def deployer_writer(
     run_compile: bool,
@@ -13,7 +15,10 @@ def deployer_writer(
     nonce: int,
     output_filename: str,
 ):
-    template_code = """import os, json; from web3 import Web3
+    template_code = """
+import os
+import json
+from web3 import Web3
 
 def Deployer():
     {% if run_compile %}
@@ -30,7 +35,7 @@ def Deployer():
     bytecode = contract_dump['bytecode']
     contract = w3.eth.contract(abi=abi, bytecode=bytecode)
 
-    deploy_txn = contract.constructor().build_transaction({
+    deploy_txn = contract.constructor({{ constructor_args }}).buildTransaction({
         'from': '{{ from_address }}',
         'gas': {{ gas }},
         'gasPrice': {{ gas_price }},
@@ -43,28 +48,28 @@ def Deployer():
     contract_address = deployment_receipt['contractAddress']
     return contract_address
 
-contract_address = Deployer()
-
-# Save rendered code to a file
-output_filename = '{{ output_filename }}'
-with open(output_filename, 'w') as output_file:
-    output_file.write(rendered_code)
-    """
+"""
 
     # Create a Jinja2 template object
     template = Template(template_code)
 
+    # Render the template
     rendered_code = template.render(
-    run_compile=run_compile,
-    network_name=network_name,
-    private_key=private_key,
-    abi_path=abi_path,
-    from_address=from_address,
-    gas=gas,
-    gas_price=gas_price,
-    nonce=nonce,
-    output_filename=output_filename
+        run_compile=run_compile,
+        constructor_args=constructor_args,
+        network_name=network_name,
+        private_key=private_key,
+        abi_path=abi_path,
+        from_address=from_address,
+        gas=gas,
+        gas_price=gas_price,
+        nonce=nonce,
+        output_filename=output_filename
     )
+
+    # Save rendered code to a file
+    with open(output_filename, 'w') as output_file:
+        output_file.write(rendered_code)
 
     return rendered_code
 
@@ -98,5 +103,6 @@ rendered_code = deployer_writer(
     output_filename=output_filename
 )
 
+print(rendered_code)
 # Write the rendered code to a file
-write_rendered_code_to_file(rendered_code, output_filename)
+# write_rendered_code_to_file(rendered_code, output_filename)

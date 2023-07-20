@@ -105,6 +105,79 @@
       "artifacts": [
         "PayeeContract"
       ]
+    },
+    "/Users/abhinavmir/Desktop/Code/eclair/contracts/uniswap.sol": {
+      "lastModificationDate": 1689377797358,
+      "contentHash": "c7d2a2276d146c7d8ab53279f1241a5f",
+      "sourceName": "contracts/uniswap.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.17"
+      ],
+      "artifacts": [
+        "IERC20",
+        "IUniswapV2Router",
+        "IWETH",
+        "UniswapV2SwapExamples"
+      ]
+    },
+    "/Users/abhinavmir/Desktop/Code/eclair/contracts/test_output.sol": {
+      "lastModificationDate": 1689608527020,
+      "contentHash": "bea70e182f202edcc34eb2ff9c9ec849",
+      "sourceName": "contracts/test_output.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "test_this"
+      ]
     }
   }
 }

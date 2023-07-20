@@ -1,4 +1,7 @@
-import os, json; from web3 import Web3
+
+import os
+import json
+from web3 import Web3
 
 def Deployer():
     
@@ -15,7 +18,7 @@ def Deployer():
     bytecode = contract_dump['bytecode']
     contract = w3.eth.contract(abi=abi, bytecode=bytecode)
 
-    deploy_txn = contract.constructor().build_transaction({
+    deploy_txn = contract.constructor([]).buildTransaction({
         'from': 'your_address',
         'gas': 200000,
         'gasPrice': 1000000000,
@@ -27,11 +30,3 @@ def Deployer():
     deployment_receipt = w3.eth.wait_for_transaction_receipt(deployment_receipt)
     contract_address = deployment_receipt['contractAddress']
     return contract_address
-
-contract_address = Deployer()
-
-# Save rendered code to a file
-output_filename = 'rendered_code.py'
-with open(output_filename, 'w') as output_file:
-    output_file.write(rendered_code)
-    

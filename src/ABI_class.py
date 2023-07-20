@@ -47,7 +47,7 @@ class ContractABI:
         def __init__(self, name, inputs, outputs, state_mutability):
             self.name = name
             self.inputs = [ContractABI.Input(i['name'], i['type'], i['internalType']) for i in inputs]
-            self.outputs = [ContractABI.Output(o['name'], o['type'], o['internalType']) for o in outputs]
+            self.outputs = [ContractABI.Output(o['type'], o['internalType']) for o in outputs]
             self.state_mutability = state_mutability
 
         def __repr__(self):
@@ -64,20 +64,20 @@ class ContractABI:
             return f"Input(name={self.name}, type={self.type}, pythonic_type={self.pythonic_type})"
     
     class Output:
-        def __init__(self, name, type, internal_type):
-            self.name = name
+        def __init__(self, type, internal_type):
+            
             self.internal_type = internal_type
             self.type = type
             self.pythonic_type = get_pythonic_type(type)
 
         def __repr__(self):
-            return f"Output(name={self.name}, type={self.type}, pythonic_type={self.pythonic_type})"
+            return f"type={self.type}, pythonic_type={self.pythonic_type})"
 
     class NonFunctionABI:
         def __init__(self, inputs, name, outputs, state_mutability, type):
             self.name = name
             self.inputs = [ContractABI.Input(i['name'], i['type'], i['internalType']) for i in inputs]
-            self.outputs = [ContractABI.Output(o['name'], o['type'], o['internalType']) for o in outputs]
+            self.outputs = [ContractABI.Output(o['type'], o['internalType']) for o in outputs]
             self.state_mutability = state_mutability
             self.type = type
 
