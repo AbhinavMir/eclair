@@ -23,7 +23,10 @@ def read_config(config_file_path):
         config = json.load(config_file)
     return config
 
-file_path = sys.argv[1:]
+if len(sys.argv) > 1:
+    file_path = sys.argv[1:]
+else: 
+    file_path = ["eclair.config.json"]
 config = read_config(file_path[0])
 
 def file_exists(filepath):
@@ -47,7 +50,7 @@ for sol_file_path in sol_file_paths:
     abis.append(ABI_class.ContractABI(sol_file_path))
 
 # Get the command line argument for the code output directory
-output_directory = sys.argv[1] if len(sys.argv) > 1 else "out"
+output_directory = config['output_directory']
 os.makedirs(output_directory, exist_ok=True)
 
 for abi in abis:
