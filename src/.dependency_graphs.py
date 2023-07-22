@@ -3,6 +3,8 @@ import re
 import networkx as nx
 import matplotlib.pyplot as plt
 
+# unnecesary file, just helped me analyze my dependencies 
+
 class DependencyGraph:
     def __init__(self):
         self.dependencies = {}
