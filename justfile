@@ -1,8 +1,5 @@
 # Justfile
 
-# Define the default task
-default: run
-
 # Build and Test
 build:
   python setup.py sdist bdist_wheel
