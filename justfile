@@ -26,11 +26,6 @@ clean-build:
   \rm -rf *.egg-info
   python3 setup.py sdist bdist_wheel
 
-# These are tester tasks, I used them to test the code, do not use them
-
-# demo:
-#   python3 src/templating_logic.py
-# deploy:
-#   python3 src/deployer_template.py
-# run:
-#     python3 src/agg.py
+publish:
+  twine upload dist/*
+  
