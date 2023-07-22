@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name='eclair-evm',
+    name='eclair-cli',
     version='1.0.0',
     author='August Radjoe',
     author_email='atg271@gmail.com',

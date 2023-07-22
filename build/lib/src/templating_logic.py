@@ -1,5 +1,5 @@
 from jinja2 import Template
-import ABI_class
+from .ABI_class import ContractABI
 import logging
 
 def initialise_class(rpc, private_key):
@@ -62,7 +62,7 @@ def create_exec_function():
     return template
 
 
-def pure_view_no_input_no_output(abi_function: ABI_class.ContractABI.FunctionABI):
+def pure_view_no_input_no_output(abi_function: ContractABI.FunctionABI):
     name = abi_function.name
     template = f"""
     def call_function_{name}(self) -> None:
@@ -70,7 +70,7 @@ def pure_view_no_input_no_output(abi_function: ABI_class.ContractABI.FunctionABI
     """
     return template
 
-def pure_view_no_input_output(abi_function: ABI_class.ContractABI.FunctionABI):
+def pure_view_no_input_output(abi_function: ContractABI.FunctionABI):
     name = abi_function.name
     outputs = abi_function.outputs  
     return_type = ", ".join(output.pythonic_type for output in outputs)
@@ -84,7 +84,7 @@ def pure_view_no_input_output(abi_function: ABI_class.ContractABI.FunctionABI):
     """
     return template
 
-def pure_view_input_no_output(abi_function: ABI_class.ContractABI.FunctionABI):
+def pure_view_input_no_output(abi_function: ContractABI.FunctionABI):
     name = abi_function.name
     inputs = abi_function.inputs
     input_params = ", ".join(f"{input.name}: {input.pythonic_type}" for input in inputs)
@@ -95,7 +95,7 @@ def pure_view_input_no_output(abi_function: ABI_class.ContractABI.FunctionABI):
     """
     return template
 
-def pure_view_input_output(abi_function: ABI_class.ContractABI.FunctionABI):
+def pure_view_input_output(abi_function: ContractABI.FunctionABI):
     name = abi_function.name
     inputs = abi_function.inputs
     input_params = ", ".join(f"{input.name}: {input.pythonic_type}" for input in inputs)
@@ -112,7 +112,7 @@ def pure_view_input_output(abi_function: ABI_class.ContractABI.FunctionABI):
     """
     return template
 
-def exec_no_input_no_output(abi_function: ABI_class.ContractABI.FunctionABI):
+def exec_no_input_no_output(abi_function: ContractABI.FunctionABI):
     name = abi_function.name
     template = f"""
     def execute_transaction_{name}(self) -> None:
@@ -120,7 +120,7 @@ def exec_no_input_no_output(abi_function: ABI_class.ContractABI.FunctionABI):
     """
     return template
 
-def exec_no_input_output(abi_function: ABI_class.ContractABI.FunctionABI):
+def exec_no_input_output(abi_function: ContractABI.FunctionABI):
     name = abi_function.name
     outputs = abi_function.outputs
     return_type = ", ".join(output.pythonic_type for output in outputs)
@@ -134,7 +134,7 @@ def exec_no_input_output(abi_function: ABI_class.ContractABI.FunctionABI):
     """
     return template
 
-def exec_input_no_output(abi_function: ABI_class.ContractABI.FunctionABI):
+def exec_input_no_output(abi_function: ContractABI.FunctionABI):
     name = abi_function.name
     inputs = abi_function.inputs
     input_params = ", ".join(f"{input.name}: {input.pythonic_type}" for input in inputs)
@@ -145,7 +145,7 @@ def exec_input_no_output(abi_function: ABI_class.ContractABI.FunctionABI):
     """
     return template
 
-def exec_input_output(abi_function: ABI_class.ContractABI.FunctionABI):
+def exec_input_output(abi_function: ContractABI.FunctionABI):
     name = abi_function.name
     inputs = abi_function.inputs
     input_params = ", ".join(f"{input.name}: {input.pythonic_type}" for input in inputs)
@@ -162,7 +162,7 @@ def exec_input_output(abi_function: ABI_class.ContractABI.FunctionABI):
     """
     return template
 
-def create_function(abi_function: ABI_class.ContractABI.FunctionABI):
+def create_function(abi_function: ContractABI.FunctionABI):
     logging.info("Creating function %s", abi_function.name)
     name = abi_function.name
     inputs = abi_function.inputs
@@ -267,7 +267,7 @@ def Deployer(w3):
 
     return rendered_code
 
-def create_class(abi: ABI_class.ContractABI, args_from_config: dict):
+def create_class(abi: ContractABI, args_from_config: dict):
     run_compile = args_from_config['run_compile']
     constructor_args = args_from_config['constructor_args']
     network_name = args_from_config['network_name']

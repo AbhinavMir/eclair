@@ -1,0 +1,6 @@
+Metadata-Version: 2.1
+Name: eclair-evm
+Version: 1.0.0
+Summary: A tool to create library wrappers for Blockchain Business Logic code.
+Author: August Radjoe
+Author-email: atg271@gmail.com

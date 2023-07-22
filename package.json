@@ -1,0 +1,25 @@
+{
+  "name": "eclair",
+  "version": "1.0.0",
+  "description": "",
+  "main": "hardhat.config.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abhinavmir/eclair.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abhinavmir/eclair/issues"
+  },
+  "homepage": "https://github.com/abhinavmir/eclair#readme",
+  "dependencies": {
+    "hardhat": "^2.17.0"
+  }
+}

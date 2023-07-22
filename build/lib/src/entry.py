@@ -44,12 +44,12 @@ class ProjectInitializer:
             'output_directory': 'wrappers',
         }
 
-        conf_file_path = os.path.join(self.directory, 'eclair.conf.json')
+        conf_file_path = os.path.join(self.directory, 'eclair.config.json')
 
         with open(conf_file_path, 'w') as conf_file:
             json.dump(conf_data, conf_file, indent=4)
 
-        print(f"eclair.conf.json created with the following data:")
+        print(f"eclair.config.json created with the following data:")
         print(conf_data)
     
     def initialize_project(self):
