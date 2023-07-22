@@ -39,4 +39,5 @@ class FunctionAggregator:
             # Write the code in the specified output directory
             code_filepath = os.path.join(output_directory, f"{abi.name}.py")
             with open(code_filepath, "w") as code_file:
+                print(f"Writing {abi.name}.py...")
                 code_file.write(create_class(abi, config))
