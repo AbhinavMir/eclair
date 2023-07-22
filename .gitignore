@@ -4,3 +4,6 @@ example/artifiact
 build
 dist
 *.egg-info
+.vs_code
+.idea
+.DS_Store
