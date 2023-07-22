@@ -96,6 +96,12 @@ def process_arguments():
         print("  help\t\t\tShow this help message")
     elif args.command == "wrap":
         process_files()
+    else:
+        print("Usage: eclair [optional command]")
+        print("Commands:")
+        print("  wrap\t\t\tWrap all contracts in the contracts directory into Python classes and deployers")
+        print("  init\t\t\tInitialize a new project")
+        print("  help\t\t\tShow this help message")
 
 if __name__ == '__main__':
     sys.exit(process_arguments())
