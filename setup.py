@@ -6,12 +6,12 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='eclair-cli',
-    version='1.0.2',
+    version='1.0.3',
     author='August Radjoe',
     author_email='atg271@gmail.com',
     description='A tool to create library wrappers for Blockchain Business Logic code.',
     long_description=long_description,
-    long_description_content_type="text/markdown",  # or "text/x-rst" for RST format
+    long_description_content_type="text/markdown",
     packages=['src'],
     entry_points={
         'console_scripts': [
@@ -22,4 +22,5 @@ setup(
         'jinja2',
         'web3',
     ],
+    url="https://github.com/abhinavmir/eclair",  # Add the GitHub repository URL here
 )
