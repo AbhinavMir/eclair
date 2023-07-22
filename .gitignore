@@ -7,3 +7,4 @@ dist
 .vs_code
 .idea
 .DS_Store
+package-lock.json
