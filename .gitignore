@@ -1,2 +1,6 @@
-node_modules
+example/node_modules
 venv
+example/artifiact
+build
+dist
+*.egg-info

@@ -1,2 +1,0 @@
-[console_scripts]
-eclair = src.main:process_arguments
