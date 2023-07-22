@@ -20,6 +20,9 @@ env:
 activate:
   source env/bin/activate
 
+dependency:
+  python3 src/.dependency_graphs.py
+
 # These are tester tasks, I used them to test the code, do not use them
 demo:
   python3 src/templating_logic.py

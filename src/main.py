@@ -82,6 +82,9 @@ def process_arguments():
 
     subparsers = parser.add_subparsers(dest='command')
     init_parser = subparsers.add_parser('init', help='Initialize a new project')
+    wrap_parser = subparsers.add_parser('wrap', help='Wrap all contracts in the contracts directory into Python classes and deployers')
+    help_parser = subparsers.add_parser('help', help='Show this help message')
+
     # Add more subparsers for different commands if needed
 
     args = parser.parse_args()
@@ -89,11 +92,7 @@ def process_arguments():
     if args.command == 'init':
         initialize_project()
     elif args.command == '--help' or args.command == 'help' or args.command == "-h" or args.command == "--h":
-        print("Usage: eclair [optional command]")
-        print("Commands:")
-        print("  wrap\t\t\tWrap all contracts in the contracts directory into Python classes and deployers")
-        print("  init\t\t\tInitialize a new project")
-        print("  help\t\t\tShow this help message")
+        parser.print_help()
     elif args.command == "wrap":
         process_files()
     else:
