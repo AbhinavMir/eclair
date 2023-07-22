@@ -88,7 +88,13 @@ def process_arguments():
 
     if args.command == 'init':
         initialize_project()
-    else:
+    elif args.command == '--help' or args.command == 'help' or args.command == "-h" or args.command == "--h":
+        print("Usage: eclair [optional command]")
+        print("Commands:")
+        print("  wrap\t\t\tWrap all contracts in the contracts directory into Python classes and deployers")
+        print("  init\t\t\tInitialize a new project")
+        print("  help\t\t\tShow this help message")
+    elif args.command == "wrap":
         process_files()
 
 if __name__ == '__main__':
