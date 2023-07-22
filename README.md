@@ -76,4 +76,4 @@ Eclair is released under the MIT License. See the LICENSE file for more details.
 
 ## Contact
 
-If you have any issues or feature requests, please open an issue on the Eclair GitHub page. For other inquiries, you can email us at support@eclair.com.
+If you have any issues or feature requests, please open an issue on the Eclair GitHub page. For other inquiries, you can reach out ioc.exchange/@formalcurryfication ~!
