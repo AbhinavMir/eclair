@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='eclair-cli',
-    version='1.0.1',
+    version='1.0.2',
     author='August Radjoe',
     author_email='atg271@gmail.com',
     description='A tool to create library wrappers for Blockchain Business Logic code.',
