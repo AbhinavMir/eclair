@@ -1,0 +1,12 @@
+{
+    "run_compile": true,
+    "constructor_args": [],
+    "network_name": "http://example.com",
+    "private_key": "your_private_key",
+    "abi_path": "abis",
+    "from_address": "your_address",
+    "gas": 200000,
+    "gas_price": 1000000000,
+    "nonce": 0,
+    "output_directory": "wrappers"
+}

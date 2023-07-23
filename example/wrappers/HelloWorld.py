@@ -4,21 +4,19 @@ import json
 from typing import Dict, Tuple
 from web3 import Web3
 
-def Deployer(w3):
-    
-    os.system("npx hardhat compile")
-    
-    private_key = 'your_private_key'
+def Deployer(w3, private_key):    
+    private_key = private_key
     account = w3.eth.account.from_key(private_key)
 
-    with open('path_to_abi_file', 'r') as file:
-        contract_dump = json.load(file)
+    with open('/Users/abhinavmir/Desktop/Code/eclair/example/abis/abi.json', 'r') as file:
+        abi = json.load(file)
 
-    abi = contract_dump['abi']
-    bytecode = contract_dump['bytecode']
+    with open('/Users/abhinavmir/Desktop/Code/eclair/example/abis/bytecode', 'r') as file:
+        bytecode = file.read()
+
     contract = w3.eth.contract(abi=abi, bytecode=bytecode)
 
-    deploy_txn = contract.constructor([]).buildTransaction({
+    deploy_txn = contract.constructor([]).build_transaction({
         'from': 'your_address',
         'gas': 200000,
         'gasPrice': 1000000000,
@@ -36,8 +34,8 @@ def Deployer(w3):
 class contract_HelloWorld_class:
 
     def __init__(self, rpc='http://example.com', private_key='your_private_key'):
-        self.w3 = Web3(Web3.HTTPProvider('http://example.com'))
-        self.deployed = Deployer(self.w3)
+        self.w3 = Web3(Web3.HTTPProvider(rpc))
+        self.deployed = Deployer(self.w3, private_key)
         self.contract_address = self.deployed['contract_address']
         self.abi = self.deployed['abi']
         self.contract = self.w3.eth.contract(address=self.contract_address, abi=self.abi)
