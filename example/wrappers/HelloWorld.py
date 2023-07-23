@@ -33,13 +33,15 @@ def Deployer(w3, private_key):
     }
 class contract_HelloWorld_class:
 
-    def __init__(self, rpc='http://example.com', private_key='your_private_key'):
+    def __init__(self, rpc, private_key):
         self.w3 = Web3(Web3.HTTPProvider(rpc))
         self.deployed = Deployer(self.w3, private_key)
         self.contract_address = self.deployed['contract_address']
         self.abi = self.deployed['abi']
         self.contract = self.w3.eth.contract(address=self.contract_address, abi=self.abi)
         self.private_key = private_key
+        self.account = self.w3.eth.account.from_key(private_key)
+        self.w3.eth.default_account = self.account.address
         
     def call_function(self, function_name: str, *args) -> Dict:
         function = getattr(self.contract.functions, function_name)(*args)
