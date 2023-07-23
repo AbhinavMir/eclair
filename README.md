@@ -42,6 +42,31 @@ eclair wrap
 
 This will process Solidity files found in the `contracts` directory of your project, generate an ABI for each contract, and then generate a Python class for each ABI in the `wrappers` directory.
 
+
+## Configuration
+
+Eclair's behavior can be customized via the `eclair.config.json` file in your project directory. This file is created when you initialize a project and includes a number of settings:
+
+- `run_compile`: Whether to compile the Solidity files before processing (default is `true`).
+
+- `constructor_args`: Arguments to be passed to the contract constructor when deploying.
+
+- `network_name`: Network to deploy to (e.g., `http://example.com`).
+
+- `private_key`: Your private key for signing transactions.
+
+- `abi_path`: Path to the ABI file for the contract.
+
+- `from_address`: Your address (will be used as the sender of transactions).
+
+- `gas`: Gas limit for transactions.
+
+- `gas_price`: Gas price for transactions.
+
+- `nonce`: Nonce for transactions.
+
+- `output_directory`: Directory to output the Python wrapper classes to (default is `wrappers`).
+
 ### Example
 
 ```solidity
@@ -56,6 +81,8 @@ contract HelloWorld {
     }
 }
 ```
+
+Will generate the following Python wrapper:
 ```python
 
 import os
@@ -146,33 +173,17 @@ class contract_HelloWorld_class:
         return self.execute_transaction('sayHello')
 ```
 
-## Configuration
-
-Eclair's behavior can be customized via the `eclair.config.json` file in your project directory. This file is created when you initialize a project and includes a number of settings:
-
-- `run_compile`: Whether to compile the Solidity files before processing (default is `true`).
-
-- `constructor_args`: Arguments to be passed to the contract constructor when deploying.
-
-- `network_name`: Network to deploy to (e.g., `http://example.com`).
-
-- `private_key`: Your private key for signing transactions.
-
-- `abi_path`: Path to the ABI file for the contract.
-
-- `from_address`: Your address (will be used as the sender of transactions).
-
-- `gas`: Gas limit for transactions.
-
-- `gas_price`: Gas price for transactions.
-
-- `nonce`: Nonce for transactions.
-
-- `output_directory`: Directory to output the Python wrapper classes to (default is `wrappers`).
-
 ## Contributing
 
 Contributions to Eclair are welcome! Please read our contributing guidelines for how to proceed.
+
+## Todos
+
+- [] Support Rust
+- [] Support JavaScript
+- [] Write extensive tests
+- [] Allow for rudiementary test generation
+- [] Allow for advanced wrapper customisation from config file
 
 ## License
 
