@@ -179,11 +179,11 @@ Contributions to Eclair are welcome! Please read our contributing guidelines for
 
 ## Todos
 
-- [] Support Rust
-- [] Support JavaScript
-- [] Write extensive tests
-- [] Allow for rudiementary test generation
-- [] Allow for advanced wrapper customisation from config file
+- [ ] Support Rust
+- [ ] Support JavaScript
+- [ ] Write extensive tests
+- [ ] Allow for rudiementary test generation
+- [ ] Allow for advanced wrapper customisation from config file
 
 ## License
 
